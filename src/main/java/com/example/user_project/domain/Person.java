@@ -1,11 +1,10 @@
 package com.example.user_project.domain;
 
+import com.example.user_project.domain.dto.Birthday;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import java.time.LocalDate;
+import javax.persistence.*;
+import javax.validation.Valid;
 
 @Entity
 @Data
@@ -26,15 +25,22 @@ public class Person {
 
     private String hobby;
 
+    @NonNull
     private String bloodType;
 
     private String address;
 
-    private LocalDate birthday;
+    @Valid
+    @Embedded
+    private Birthday birthday;
 
     private String job;
 
     private String phoneNumber;
+
+    @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
+    @ToString.Exclude
+    private Block block;
 
     /*public boolean equals(Object object){
         if(object == null){
