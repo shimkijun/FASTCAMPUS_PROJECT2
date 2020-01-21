@@ -47,7 +47,7 @@ class PersonServiceTest {
     }
 
     @Test
-    void getPersonIfNotFound(){ 
+    void getPersonIfNotFound(){
         when(personRepository.findById(1L))
                 .thenReturn(Optional.empty());
         Person person = personService.getPerson(1L);
