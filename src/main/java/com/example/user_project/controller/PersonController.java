@@ -17,9 +17,6 @@ public class PersonController {
     @Autowired
     private PersonService personService;
 
-    @Autowired
-    private PersonRepository personRepository;
-
     @GetMapping("/{id}")
     public Person getPerson(@PathVariable Long id){
         return personService.getPerson(id);
@@ -27,27 +24,24 @@ public class PersonController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void postPerson(@RequestBody Person person){
-        personService.put(person);
-        log.info("person -> {}",personRepository.findAll());
+    public void postPerson(@RequestBody PersonDto personDto){
+        personService.put(personDto);
     }
 
     @PutMapping("/{id}")
     public void modifyPerson(@PathVariable Long id, @RequestBody PersonDto person){
         personService.modify(id,person);
-        log.info("person -> {}",personRepository.findAll());
     }
 
     @PatchMapping("/{id}")
     public void modifyPerson(@PathVariable Long id, String name){
         personService.modify(id,name);;
-        log.info("person -> {}",personRepository.findAll());
     }
 
     @DeleteMapping("/{id}")
     public void deletePerson(@PathVariable Long id){
         personService.delete(id);
-        log.info("person -> {}",personRepository.findAll());
+        //return personRepository.findPeopleDeleted().stream().anyMatch(person -> person.getId().equals(id));
     }
 
 }

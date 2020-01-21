@@ -69,7 +69,7 @@ public class Person {
 
     public Integer getAge(){
         if(this.birthday != null) {
-            return LocalDate.now().getYear() - this.birthday.getDayOfBirthday() + 1;
+            return LocalDate.now().getYear() - this.birthday.getYearOfBirthday() + 1;
         }else{
             return null;
         }
