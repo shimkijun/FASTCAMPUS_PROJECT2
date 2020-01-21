@@ -2,6 +2,7 @@ package com.example.user_project.controller;
 
 import com.example.user_project.repository.PersonRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,12 +12,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
+@Transactional
 class PersonControllerTest {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -64,13 +67,14 @@ class PersonControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("utf-8")
                         .content("{\n" +
-                                "\"name\" : \"martin\", \"age\" : 20 , \"bloodType\" : \"A\"\n" +
+                                "\"name\" : \"martin\", \"bloodType\" : \"A\"\n" +
                                 "}")
                 ).andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
+    @Disabled
     void modifyName() throws Exception{
         mockMvc.perform(
                 MockMvcRequestBuilders.patch("/api/person/1")
@@ -80,6 +84,7 @@ class PersonControllerTest {
     }
 
     @Test
+    @Disabled
     void deletePerson() throws Exception{
         mockMvc.perform(
                 MockMvcRequestBuilders.delete("/api/person/1"))

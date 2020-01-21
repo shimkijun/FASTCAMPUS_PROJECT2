@@ -1,10 +1,7 @@
 package com.example.user_project.service;
 
 import com.example.user_project.controller.dto.PersonDto;
-import com.example.user_project.domain.Block;
 import com.example.user_project.domain.Person;
-import com.example.user_project.domain.dto.Birthday;
-import com.example.user_project.repository.BlockRepository;
 import com.example.user_project.repository.PersonRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -21,18 +16,6 @@ public class PersonService {
 
     @Autowired
     PersonRepository personRepository;
-
-    @Autowired
-    BlockRepository blockRepository;
-
-    public List<Person> getPeopleExcludeBlocks(){
-        //List<Person> people = personRepository.findAll();
-        //List<Block> blocks = blockRepository.findAll();
-        //List<String> blockName = blocks.stream().map(Block::getName).collect(Collectors.toList());
-
-        //return people.stream().filter(person -> person.getBlock() == null).collect(Collectors.toList());
-        return personRepository.findByBlockNull();
-    }
 
     @Transactional(readOnly = true)
     public Person getPerson(Long id){
@@ -58,7 +41,7 @@ public class PersonService {
     public void modify(Long id, PersonDto personDto) {
         Person person = personRepository.findById(id).orElseThrow(() -> new RuntimeException("아이디가 존재하지 않습니다."));
 
-        if(person.getName().equals(personDto.getName())){
+        if(!person.getName().equals(personDto.getName())){
             throw  new RuntimeException("이름이 다릅니다.");
         }
         person.set(personDto);
