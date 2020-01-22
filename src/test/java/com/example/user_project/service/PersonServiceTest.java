@@ -3,6 +3,8 @@ package com.example.user_project.service;
 import com.example.user_project.controller.dto.PersonDto;
 import com.example.user_project.domain.Person;
 import com.example.user_project.domain.dto.Birthday;
+import com.example.user_project.domain.exception.PersonNotFoundException;
+import com.example.user_project.domain.exception.RenameNotPermittedException;
 import com.example.user_project.repository.PersonRepository;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
@@ -66,14 +68,14 @@ class PersonServiceTest {
     void modifyIfPersonNotFound(){
         when(personRepository.findById(1L))
                 .thenReturn(Optional.empty());
-        assertThrows(RuntimeException.class, () -> personService.modify(1L,mockPersonDto()));
+        assertThrows(PersonNotFoundException.class, () -> personService.modify(1L,mockPersonDto()));
     }
 
     @Test
     void modifyIfNameDifferent() {
         when(personRepository.findById(1L))
                 .thenReturn(Optional.of(new Person("tony")));
-        assertThrows(RuntimeException.class, () ->personService.modify(1L,mockPersonDto()));
+        assertThrows(RenameNotPermittedException.class, () ->personService.modify(1L,mockPersonDto()));
     }
 
     @Test
@@ -91,7 +93,7 @@ class PersonServiceTest {
         when(personRepository.findById(1L))
             .thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class, () -> personService.modify(1L,"daniel"));
+        assertThrows(PersonNotFoundException.class, () -> personService.modify(1L,"daniel"));
     }
 
     @Test
@@ -107,7 +109,7 @@ class PersonServiceTest {
     void deleteIfPersonNotFound(){
         when(personRepository.findById(1L))
                 .thenReturn(Optional.empty());
-        assertThrows(RuntimeException.class, () -> personService.delete(1L));
+        assertThrows(PersonNotFoundException.class, () -> personService.delete(1L));
     }
 
     @Test
